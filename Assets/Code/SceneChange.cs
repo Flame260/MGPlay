@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class SceneChange : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public string sceneName;
+    
     void Start()
     {
         
@@ -16,8 +16,13 @@ public class SceneChange : MonoBehaviour
         
     }
 
-    public void loadScene()
+    public void loadScene1()
     {
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene("GamePlay1");
+    }
+    public void loadScene2()
+    {
+        SceneManager.LoadScene("GamePlay2");
     }
 }
+
