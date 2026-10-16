@@ -27,13 +27,23 @@ public class GameManager2 : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+    public void Win()
+    {
+        if (ended) return;
+        ended = true;
+        gameClearUI.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
     public void Restart()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void LoadMenu()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("Menu");
     }
 }
