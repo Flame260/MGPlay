@@ -16,6 +16,13 @@ public class Bullet : MonoBehaviour
         direction = newDirection.normalized;
     }
 
+    public void Setup(Vector3 newDirection, float newSpeed, bool isPLayerBullet)
+    {
+        direction = newDirection.normalized;
+        speed = newSpeed;
+        fromPlayer = isPLayerBullet;
+    }
+
     void Update()
     {
         transform.position += direction * speed * Time.deltaTime;

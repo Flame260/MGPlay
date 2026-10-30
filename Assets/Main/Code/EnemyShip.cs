@@ -65,9 +65,10 @@ public class EnemyShip : MonoBehaviour
             dir = player.position - transform.position;
             dir.y = 0;
         }
-
-        GameObject b = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-        b.GetComponent<Bullet>().SetDirection(dir);
+        Vector3 spawnPos = transform.position;
+        spawnPos.y = 0;
+        GameObject b = Instantiate(bulletPrefab, spawnPos, Quaternion.identity);
+        b.GetComponent<Bullet>().Setup(dir, 6f, false);
     }
 
     public void TakeDamage(int amount)
@@ -91,11 +92,11 @@ public class EnemyShip : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(name + " touched " + other.name);
-        PlayerHealth player = other.GetComponent<PlayerHealth>();
-        if (player != null)
+        PlayerHealth hit = other.GetComponentInParent<PlayerHealth>();
+        if (hit != null)
         {
-            player.TakeDamage(1);
+            Debug.Log("Enemy hit player");
+            hit.TakeDamage(1);
             Destroy(gameObject);
         }
     }

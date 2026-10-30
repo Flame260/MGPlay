@@ -45,8 +45,10 @@ public class AutoShoot : MonoBehaviour
     void SpawnBullet(float angle)
     {
         Vector3 dir = Quaternion.Euler(0, angle, 0) * Vector3.forward;
-        GameObject b = Instantiate(bulletPrefab, transform.position + Vector3.forward, Quaternion.identity);
-        b.GetComponent<Bullet>().SetDirection(dir);
+        Vector3 spawnPos = transform.position + Vector3.forward;
+        spawnPos.y = 0;
+        GameObject b = Instantiate(bulletPrefab, spawnPos, Quaternion.identity);
+        b.GetComponent<Bullet>().Setup(dir, 20f, true);
     }
 
     public void StartSpread(float time)

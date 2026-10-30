@@ -16,6 +16,12 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         hitTimer -= Time.deltaTime;
+
+        Renderer r = GetComponent<Renderer>();
+        if (r != null && !r.enabled)
+        {
+            Debug.Log("Player renderer is OFF");
+        }
     }
 
     public void TakeDamage(int amount)
@@ -30,5 +36,14 @@ public class PlayerHealth : MonoBehaviour
         {
             GameManager2.Instance.GameOver();
         }
+    }
+    void OnDestroy()
+    {
+        Debug.Log("PLAYER WAS DESTROYED");
+    }
+
+    void OnDisable()
+    {
+        Debug.Log("PLAYER WAS DISABLED");
     }
 }

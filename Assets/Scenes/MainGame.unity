@@ -2775,6 +2775,14 @@ PrefabInstance:
       propertyPath: hpText
       value: 
       objectReference: {fileID: 1124060503}
+    - target: {fileID: 7162036633027368507, guid: 1d18199424954a5458fd72f042a7dac4, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162036633027368507, guid: 1d18199424954a5458fd72f042a7dac4, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8653209417395169807, guid: 1d18199424954a5458fd72f042a7dac4, type: 3}
       propertyPath: m_Name
       value: Player
