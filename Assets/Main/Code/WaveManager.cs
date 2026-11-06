@@ -8,12 +8,15 @@ public class Wave
     public GameObject[] enemyPrefabs;
     public int count = 6;
     public float spawnDelay = 0.6f;
+    public bool line = false;
+    
 }
 
 public class WaveManager : MonoBehaviour
 {
     public Wave[] waves;
     public TMP_Text waveText;
+    public static float difficulty = 1f;
 
     void Start()
     {
@@ -26,6 +29,7 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < waves.Length; i++)
         {
+            difficulty = 1f + i * 0.15f;
             waveText.text = "WAVE " + (i + 1);
             yield return new WaitForSeconds(2f);
             waveText.text = "";
@@ -47,6 +51,13 @@ public class WaveManager : MonoBehaviour
         {
             int pick = Random.Range(0, wave.enemyPrefabs.Length);
             float x = Random.Range(-halfWidth + 1, halfWidth - 1);
+
+            if (wave.line)
+            {
+                float spacing = (halfWidth * 2 - 2) / (wave.count - 1);
+                x = -halfWidth + 1 + spacing * i;
+            }
+
             Instantiate(wave.enemyPrefabs[pick], new Vector3(x, 0, halfHeight + 2), Quaternion.identity);
             yield return new WaitForSeconds(wave.spawnDelay);
         }

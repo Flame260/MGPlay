@@ -19,6 +19,21 @@ public class EnemyShip : MonoBehaviour
     float shootTimer;
     Transform player;
 
+    public GameObject explosionPrefab;
+
+    public enum Pattern
+    {
+        Aimed,
+        Straight,
+        Spread,
+        Ring,
+        Spiral
+    }
+    public Pattern pattern = Pattern.Aimed;
+    public int bulletCount = 5;
+    public float bulletSpeed = 5f;
+    float spiralAngle;
+
     void Start()
     {
         startX = transform.position.x;
@@ -59,16 +74,55 @@ public class EnemyShip : MonoBehaviour
 
     void Shoot()
     {
-        Vector3 dir = Vector3.back;
-        if (aimAtPlayer && player != null)
+        if (pattern == Pattern.Straight)
         {
-            dir = player.position - transform.position;
-            dir.y = 0;
+            FireBullet(Vector3.back);
         }
+        else if (pattern == Pattern.Aimed)
+        {
+            FireBullet(DirectionToPlayer());
+        }
+        else if (pattern == Pattern.Spread)
+        {
+            Vector3 center = DirectionToPlayer();
+            for (int i = 0; i < bulletCount; i++)
+            {
+                float angle = (i - (bulletCount - 1) / 2f) * 15f;
+                FireBullet(Quaternion.Euler(0, angle, 0) * center);
+            }
+        }
+        else if (pattern == Pattern.Ring)
+        {
+            for (int i = 0; i < bulletCount; i++)
+            {
+                float angle = i * (360f / bulletCount);
+                FireBullet(Quaternion.Euler(0, angle, 0) * Vector3.forward);
+            }
+        }
+        else if (pattern == Pattern.Spiral)
+        {
+            FireBullet(Quaternion.Euler(0, spiralAngle, 0) * Vector3.forward);
+            spiralAngle += 25f;
+        }
+
+    }
+
+    Vector3 DirectionToPlayer()
+    {
+        if (player == null)
+        {
+            return Vector3.back;
+        }
+        Vector3 dir = player.position - transform.position;
+        dir.y=0;
+        return dir.normalized;
+    }
+    void FireBullet(Vector3 dir)
+    {
         Vector3 spawnPos = transform.position;
         spawnPos.y = 0;
         GameObject b = Instantiate(bulletPrefab, spawnPos, Quaternion.identity);
-        b.GetComponent<Bullet>().Setup(dir, 6f, false);
+        b.GetComponent<Bullet>().Setup(dir, bulletSpeed * WaveManager.difficulty, false);
     }
 
     public void TakeDamage(int amount)
@@ -82,10 +136,15 @@ public class EnemyShip : MonoBehaviour
 
     void Die()
     {
+        AudioManager.Instance.Play(AudioManager.Instance.enemyDieSound, 0.6f);
         if (drops.Length > 0 && Random.value < dropChance)
         {
             int pick = Random.Range(0, drops.Length);
             Instantiate(drops[pick], transform.position, Quaternion.identity);
+        }
+        if (explosionPrefab != null)
+        {
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
         Destroy(gameObject);
     }
@@ -95,7 +154,7 @@ public class EnemyShip : MonoBehaviour
         PlayerHealth hit = other.GetComponentInParent<PlayerHealth>();
         if (hit != null)
         {
-            Debug.Log("Enemy hit player");
+            
             hit.TakeDamage(1);
             Destroy(gameObject);
         }

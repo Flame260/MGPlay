@@ -3,7 +3,7 @@ using TMPro;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int health = 3;
+    public int health = 10;
     public TMP_Text hpText;
 
     float hitTimer;
@@ -17,16 +17,12 @@ public class PlayerHealth : MonoBehaviour
     {
         hitTimer -= Time.deltaTime;
 
-        Renderer r = GetComponent<Renderer>();
-        if (r != null && !r.enabled)
-        {
-            Debug.Log("Player renderer is OFF");
-        }
     }
 
     public void TakeDamage(int amount)
     {
         if (hitTimer > 0) return;
+        AudioManager.Instance.Play(AudioManager.Instance.hurtSound, 1f);
 
         health -= amount;
         hitTimer = 1.5f;
@@ -37,13 +33,5 @@ public class PlayerHealth : MonoBehaviour
             GameManager2.Instance.GameOver();
         }
     }
-    void OnDestroy()
-    {
-        Debug.Log("PLAYER WAS DESTROYED");
-    }
-
-    void OnDisable()
-    {
-        Debug.Log("PLAYER WAS DISABLED");
-    }
+   
 }

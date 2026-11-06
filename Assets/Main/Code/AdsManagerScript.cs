@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class AdsManagerScript : MonoBehaviour
 {
+    public static AdsManagerScript Instance;
+
     [SerializeField] private string appKey;
     [SerializeField] private string interstitialAdKey;
 
@@ -10,6 +12,14 @@ public class AdsManagerScript : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         LevelPlay.OnInitSuccess += OnInitSuccess;
         LevelPlay.OnInitFailed += OnInitFailed;
 
@@ -18,8 +28,11 @@ public class AdsManagerScript : MonoBehaviour
 
     private void OnDestroy()
     {
-        LevelPlay.OnInitSuccess -= OnInitSuccess;
-        LevelPlay.OnInitFailed -= OnInitFailed;
+        if (Instance == this)
+        {
+            LevelPlay.OnInitSuccess -= OnInitSuccess;
+            LevelPlay.OnInitFailed -= OnInitFailed;
+        }
     }
 
     private void OnInitSuccess(LevelPlayConfiguration config)

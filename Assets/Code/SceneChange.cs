@@ -18,7 +18,7 @@ public class SceneChange : MonoBehaviour
 
     public void loadScene1()
     {
-        SceneManager.LoadScene("GamePlay1");
+        SceneManager.LoadScene("MainGame");
     }
     public void loadScene2()
     {

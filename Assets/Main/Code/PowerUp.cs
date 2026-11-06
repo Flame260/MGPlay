@@ -12,6 +12,7 @@ public class PowerUp : MonoBehaviour
 
         if (transform.position.z < -12)
         {
+            
             Destroy(gameObject);
         }
     }
@@ -29,6 +30,7 @@ public class PowerUp : MonoBehaviour
             {
                 shoot.StartRapid(duration);
             }
+            AudioManager.Instance.Play(AudioManager.Instance.powerUpSound, 1f);
             Destroy(gameObject);
         }
     }

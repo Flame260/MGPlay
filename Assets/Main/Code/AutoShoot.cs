@@ -30,6 +30,7 @@ public class AutoShoot : MonoBehaviour
 
     void Shoot()
     {
+        
         if (spreadTimer > 0)
         {
             SpawnBullet(-12);
@@ -39,6 +40,11 @@ public class AutoShoot : MonoBehaviour
         else
         {
             SpawnBullet(0);
+        }
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.Play(AudioManager.Instance.shootSound, 0.2f);
+            
         }
     }
 

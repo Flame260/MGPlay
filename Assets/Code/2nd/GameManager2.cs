@@ -7,6 +7,7 @@ public class GameManager2 : MonoBehaviour
 
     public GameObject gameOverUI;
     public GameObject gameClearUI;
+    static int restartCount;
 
     bool ended;
 
@@ -23,6 +24,7 @@ public class GameManager2 : MonoBehaviour
     {
         if (ended) return;
         ended = true;
+        AudioManager.Instance.Play(AudioManager.Instance.gameOverSound, 1f);
         gameOverUI.SetActive(true);
         Time.timeScale = 0f;
     }
@@ -38,6 +40,13 @@ public class GameManager2 : MonoBehaviour
     public void Restart()
     {
         Time.timeScale = 1f;
+        restartCount++;
+
+        if (restartCount % 3 == 0 && AdsManagerScript.Instance != null)
+        {
+            AdsManagerScript.Instance.ShowInterstitial();
+        }
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
